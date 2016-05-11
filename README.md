@@ -1,11 +1,8 @@
 # HTTP/2 Server Push Demonstration
 
 ```
-# Clone this demonstration into your GOPATH
-git clone github.com/bradleyfalzon/h2push
-
 # Fetch lib providing h2 server push
-go get github.com/bradleyfalzon/net/http2
+go get -u github.com/bradleyfalzon/net/http2
 
 # Generate demonstration SSL/TLS certificates
 openssl req -x509 -newkey  rsa:2048 -keyout key.pem -out cert.pem -days 90 -nodes

@@ -30,19 +30,19 @@ func main() {
 	http.HandleFunc("/www.eff.org/index.html", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request to:", r.URL.Path)
 
-		w.Header().Add("Link", "/www.eff.org/files/css/css_r7mP1rcWJQ63n8Fdr5p_bAp2cVsr4IDoQbtzGzliANo.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_vZ_wrMQ9Og-YPPxa1q4us3N7DsZMJa-14jShHgRoRNo.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_2WDS6rAKK7kwjEKZtVIbWvbcKp7kyhaaJDneFaYyT34.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_43sKUz3HG7KOJQSVVW0hT6W7-EqA3vEXKduP02UVQTw.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_mhhV1yVGqP_Qqn-u74hMcrMPpfrZj3odebRQjphmZ5Y.css")
-		w.Header().Add("Link", "/www.eff.org/files/css/css_Dm-SJfMUMI3Lq1IRh7yJYS8gMbJAhKw4i7TNs8uKI4I.css")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_r7mP1rcWJQ63n8Fdr5p_bAp2cVsr4IDoQbtzGzliANo.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_vZ_wrMQ9Og-YPPxa1q4us3N7DsZMJa-14jShHgRoRNo.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_2WDS6rAKK7kwjEKZtVIbWvbcKp7kyhaaJDneFaYyT34.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_43sKUz3HG7KOJQSVVW0hT6W7-EqA3vEXKduP02UVQTw.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_mhhV1yVGqP_Qqn-u74hMcrMPpfrZj3odebRQjphmZ5Y.css>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/css/css_Dm-SJfMUMI3Lq1IRh7yJYS8gMbJAhKw4i7TNs8uKI4I.css>; rel=preload;")
 
-		w.Header().Add("Link", "/www.eff.org/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js")
-		w.Header().Add("Link", "/www.eff.org/files/js/js_s_L-qx31pYm4AOYQvCH7NIEVsKUI7hfThWDEWJZSym4.js")
-		w.Header().Add("Link", "/www.eff.org/files/js/js_6J_fxLrsplKcEmRgJC-6QRLa7T_nJvQ7W6oH96gDKng.js")
-		w.Header().Add("Link", "/www.eff.org/files/js/js_OWTzqYYA7y6juLuDtKlBec_ktkD9iEau8Adyq3MXYYY.js")
-		w.Header().Add("Link", "/www.eff.org/files/js/js_aRe4mjwNkRq0UugCuQDnvErzl6bmOFX_DLCke_FfyYc.js")
+		w.Header().Add("Link", "</www.eff.org/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/js/js_s_L-qx31pYm4AOYQvCH7NIEVsKUI7hfThWDEWJZSym4.js>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/js/js_6J_fxLrsplKcEmRgJC-6QRLa7T_nJvQ7W6oH96gDKng.js>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/js/js_OWTzqYYA7y6juLuDtKlBec_ktkD9iEau8Adyq3MXYYY.js>; rel=preload;")
+		w.Header().Add("Link", "</www.eff.org/files/js/js_aRe4mjwNkRq0UugCuQDnvErzl6bmOFX_DLCke_FfyYc.js>; rel=preload;")
 
 		file, err := ioutil.ReadFile(r.URL.Path[1:])
 		if err != nil {
@@ -60,8 +60,8 @@ func main() {
 		}
 
 		// Push this resource by setting the Link header
-		w.Header().Add("Link", "/static/main.css")
-		w.Header().Add("Link", "/static/main.js")
+		w.Header().Add("Link", "</static/main.css>; rel=preload;")
+		w.Header().Add("Link", "</static/main.js>; rel=preload;")
 
 		fmt.Fprint(w, `<!DOCTYPE html>
 <html lang="en">
