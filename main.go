@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http" // Post Go 1.6 HTTP/2 support
 	"time"
@@ -20,6 +21,36 @@ func main() {
 	cert := flag.String("cert", "cert.pem", "Path to TLS public certificate")
 	key := flag.String("key", "key.pem", "Path to TLS private key")
 	flag.Parse()
+
+	log.SetFlags(log.Ltime | log.Lmicroseconds)
+
+	// eff example site
+	http.Handle("/www.eff.org/files/", http.StripPrefix("/www.eff.org/files/", http.FileServer(http.Dir("www.eff.org/files/"))))
+	http.Handle("/www.eff.org/sites/", http.StripPrefix("/www.eff.org/sites/", http.FileServer(http.Dir("www.eff.org/sites/"))))
+	http.HandleFunc("/www.eff.org/index.html", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Request to:", r.URL.Path)
+
+		w.Header().Add("Link", "/www.eff.org/files/css/css_r7mP1rcWJQ63n8Fdr5p_bAp2cVsr4IDoQbtzGzliANo.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_vZ_wrMQ9Og-YPPxa1q4us3N7DsZMJa-14jShHgRoRNo.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_2WDS6rAKK7kwjEKZtVIbWvbcKp7kyhaaJDneFaYyT34.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_43sKUz3HG7KOJQSVVW0hT6W7-EqA3vEXKduP02UVQTw.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_mhhV1yVGqP_Qqn-u74hMcrMPpfrZj3odebRQjphmZ5Y.css")
+		w.Header().Add("Link", "/www.eff.org/files/css/css_Dm-SJfMUMI3Lq1IRh7yJYS8gMbJAhKw4i7TNs8uKI4I.css")
+
+		w.Header().Add("Link", "/www.eff.org/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js")
+		w.Header().Add("Link", "/www.eff.org/files/js/js_s_L-qx31pYm4AOYQvCH7NIEVsKUI7hfThWDEWJZSym4.js")
+		w.Header().Add("Link", "/www.eff.org/files/js/js_6J_fxLrsplKcEmRgJC-6QRLa7T_nJvQ7W6oH96gDKng.js")
+		w.Header().Add("Link", "/www.eff.org/files/js/js_OWTzqYYA7y6juLuDtKlBec_ktkD9iEau8Adyq3MXYYY.js")
+		w.Header().Add("Link", "/www.eff.org/files/js/js_aRe4mjwNkRq0UugCuQDnvErzl6bmOFX_DLCke_FfyYc.js")
+
+		file, err := ioutil.ReadFile(r.URL.Path[1:])
+		if err != nil {
+			log.Printf("err reading %s: %s", r.URL.Path, err)
+			return
+		}
+		fmt.Fprint(w, string(file))
+	})
 
 	// index html
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +77,7 @@ func main() {
 	<p id="cssnp">CSS was not pushed</p>
 	<p id="jsout"></p>
 	<hr>
-	<a href="https://twitter.com/bradleyfalzon">@bradleyfalzon</a>
+	<a href="https://twitter.com/bradleyfalzon">@bradleyfalzon</a> | <a href="www.eff.org/index.html">See EFF site via HTTP/2 Push</a>
 	<script src="/static/main.js"></script>
   </body>
 </html>`)
