@@ -30,19 +30,24 @@ func main() {
 	http.HandleFunc("/www.eff.org/index.html", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request to:", r.URL.Path)
 
-		w.Header().Add("Link", "</www.eff.org/files/css/css_r7mP1rcWJQ63n8Fdr5p_bAp2cVsr4IDoQbtzGzliANo.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_vZ_wrMQ9Og-YPPxa1q4us3N7DsZMJa-14jShHgRoRNo.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_2WDS6rAKK7kwjEKZtVIbWvbcKp7kyhaaJDneFaYyT34.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_43sKUz3HG7KOJQSVVW0hT6W7-EqA3vEXKduP02UVQTw.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_mhhV1yVGqP_Qqn-u74hMcrMPpfrZj3odebRQjphmZ5Y.css>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/css/css_Dm-SJfMUMI3Lq1IRh7yJYS8gMbJAhKw4i7TNs8uKI4I.css>; rel=preload;")
+		r.ParseForm()
+		if r.Form.Get("push") == "" || r.Form.Get("push") == "css" {
+			w.Header().Add("Link", "</www.eff.org/files/css/css_r7mP1rcWJQ63n8Fdr5p_bAp2cVsr4IDoQbtzGzliANo.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_vZ_wrMQ9Og-YPPxa1q4us3N7DsZMJa-14jShHgRoRNo.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_2WDS6rAKK7kwjEKZtVIbWvbcKp7kyhaaJDneFaYyT34.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_43sKUz3HG7KOJQSVVW0hT6W7-EqA3vEXKduP02UVQTw.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_mhhV1yVGqP_Qqn-u74hMcrMPpfrZj3odebRQjphmZ5Y.css>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/css/css_Dm-SJfMUMI3Lq1IRh7yJYS8gMbJAhKw4i7TNs8uKI4I.css>; rel=preload;")
+		}
 
-		w.Header().Add("Link", "</www.eff.org/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/js/js_s_L-qx31pYm4AOYQvCH7NIEVsKUI7hfThWDEWJZSym4.js>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/js/js_6J_fxLrsplKcEmRgJC-6QRLa7T_nJvQ7W6oH96gDKng.js>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/js/js_OWTzqYYA7y6juLuDtKlBec_ktkD9iEau8Adyq3MXYYY.js>; rel=preload;")
-		w.Header().Add("Link", "</www.eff.org/files/js/js_aRe4mjwNkRq0UugCuQDnvErzl6bmOFX_DLCke_FfyYc.js>; rel=preload;")
+		if r.Form.Get("push") == "" || r.Form.Get("push") == "js" {
+			w.Header().Add("Link", "</www.eff.org/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/js/js_s_L-qx31pYm4AOYQvCH7NIEVsKUI7hfThWDEWJZSym4.js>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/js/js_6J_fxLrsplKcEmRgJC-6QRLa7T_nJvQ7W6oH96gDKng.js>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/js/js_OWTzqYYA7y6juLuDtKlBec_ktkD9iEau8Adyq3MXYYY.js>; rel=preload;")
+			w.Header().Add("Link", "</www.eff.org/files/js/js_aRe4mjwNkRq0UugCuQDnvErzl6bmOFX_DLCke_FfyYc.js>; rel=preload;")
+		}
 
 		file, err := ioutil.ReadFile(r.URL.Path[1:])
 		if err != nil {
@@ -59,9 +64,14 @@ func main() {
 			return
 		}
 
-		// Push this resource by setting the Link header
-		w.Header().Add("Link", "</static/main.css>; rel=preload;")
-		w.Header().Add("Link", "</static/main.js>; rel=preload;")
+		// Push the resource by setting the Link header
+		r.ParseForm()
+		if r.Form.Get("push") == "all" || r.Form.Get("push") == "css" {
+			w.Header().Add("Link", "</static/main.css>; rel=preload;")
+		}
+		if r.Form.Get("push") == "all" || r.Form.Get("push") == "js" {
+			w.Header().Add("Link", "</static/main.js>; rel=preload;")
+		}
 
 		fmt.Fprint(w, `<!DOCTYPE html>
 <html lang="en">
@@ -71,6 +81,7 @@ func main() {
     <link rel="stylesheet" href="/static/main.css">
   </head>
   <body>
+    <div style="text-align: center; background: black;padding: 15px;margin: -10px;"><a href="?push=none">Disable Push</a> | <a href="?push=css">Push CSS</a> | <a href="?push=js">Push JS</a> | <a href="?push=">Push All</a></div>
     <h1>HTTP/2 Server Push</h1>
 	<p>See <a href="https://bradleyf.id.au/dev/go-http2-server-push-fork/">details</a> and <a href="https://github.com/bradleyfalzon/h2push-demo">source</a></p>
 	<p id="cssp">CSS was pushed</p>
