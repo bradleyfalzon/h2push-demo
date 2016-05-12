@@ -66,10 +66,10 @@ func main() {
 
 		// Push the resource by setting the Link header
 		r.ParseForm()
-		if r.Form.Get("push") == "all" || r.Form.Get("push") == "css" {
+		if r.Form.Get("push") == "" || r.Form.Get("push") == "css" {
 			w.Header().Add("Link", "</static/main.css>; rel=preload;")
 		}
-		if r.Form.Get("push") == "all" || r.Form.Get("push") == "js" {
+		if r.Form.Get("push") == "" || r.Form.Get("push") == "js" {
 			w.Header().Add("Link", "</static/main.js>; rel=preload;")
 		}
 
